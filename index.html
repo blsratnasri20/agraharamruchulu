@@ -50,10 +50,10 @@
             border-color: #FFD700;
         }
         
-        .lang-btn.active {
-            background: #DAA520;
-            border-color: #DAA520;
-            color: #8B0000;
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .container {
@@ -327,8 +327,8 @@
 </head>
 <body>
     <div class="lang-switcher">
-        <button class="lang-btn active" data-lang="en" onclick="switchLanguage('en')">EN</button>
-        <button class="lang-btn" data-lang="te" onclick="switchLanguage('te')">తెలుగు</button>
+        <button class="lang-btn" id="langBtnEn" data-lang="en" onclick="switchLanguage('en')" style="display: none;">EN</button>
+        <button class="lang-btn" id="langBtnTe" data-lang="te" onclick="switchLanguage('te')" style="display: none;">తెలుగు</button>
     </div>
     
     <div class="container">
@@ -415,27 +415,31 @@
         
         // Initialize language on page load
         function initLanguage() {
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === currentLang) {
-                    btn.classList.add('active');
-                }
-            });
+            updateLanguageButton();
             updatePageLanguage();
+        }
+        
+        // Update which language button is visible
+        function updateLanguageButton() {
+            const btnEn = document.getElementById('langBtnEn');
+            const btnTe = document.getElementById('langBtnTe');
+            
+            if (currentLang === 'en') {
+                // Show Telugu button, hide EN button
+                if (btnEn) btnEn.style.display = 'none';
+                if (btnTe) btnTe.style.display = 'flex';
+            } else {
+                // Show EN button, hide Telugu button
+                if (btnEn) btnEn.style.display = 'flex';
+                if (btnTe) btnTe.style.display = 'none';
+            }
         }
         
         // Switch language
         function switchLanguage(lang) {
             currentLang = lang;
             localStorage.setItem('language', lang);
-            
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === lang) {
-                    btn.classList.add('active');
-                }
-            });
-            
+            updateLanguageButton();
             updatePageLanguage();
         }
         

@@ -36,12 +36,126 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         
         .lang-switcher {
             display: flex;
             gap: 0.5rem;
             align-items: center;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 2px solid #FFEAA7;
+            border-radius: 6px;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            padding: 0;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .menu-toggle:hover {
+            background: rgba(255, 234, 167, 0.2);
+            border-color: #FFD700;
+        }
+        
+        .menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 3px;
+            background: #FFEAA7;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        .side-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .side-nav-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(135deg, #8B3A3A 0%, #7B2D2D 50%, #8B0000 100%);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+            z-index: 999;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding-top: 1rem;
+        }
+        
+        .side-nav.active {
+            left: 0;
+        }
+        
+        .side-nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .side-nav-item {
+            border-bottom: 1px solid rgba(255, 234, 167, 0.1);
+        }
+        
+        .side-nav-item a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: #FFEAA7;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.25s ease;
+            touch-action: manipulation;
+        }
+        
+        .side-nav-item a:hover {
+            background: rgba(218, 165, 32, 0.3);
+            color: #FFD700;
+            padding-left: 2rem;
+        }
+        
+        .side-nav-item a.active {
+            background: #DAA520;
+            color: #8B0000;
+            font-weight: 600;
         }
         
         .lang-btn {
@@ -55,17 +169,14 @@
             font-weight: 600;
             transition: all 0.25s ease;
             touch-action: manipulation;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .lang-btn:hover {
             background: rgba(255, 234, 167, 0.3);
             border-color: #FFD700;
-        }
-        
-        .lang-btn.active {
-            background: #DAA520;
-            border-color: #DAA520;
-            color: #8B0000;
         }
         
         .nav-list {
@@ -245,12 +356,16 @@
             
             .nav-container {
                 padding: 0 0.75rem;
-                flex-direction: column;
+                flex-direction: row;
                 gap: 0.75rem;
             }
             
-            .lang-switcher {
-                order: -1;
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .nav-list {
+                display: none;
             }
             
             .lang-btn {
@@ -262,18 +377,6 @@
                 font-size: 1.6rem;
                 margin-bottom: 1rem;
                 line-height: 1.2;
-            }
-            
-            .nav-list {
-                gap: 0.4rem;
-            }
-            
-            .nav-item a {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.85rem;
-                min-height: 36px;
-                display: inline-flex;
-                align-items: center;
             }
             
             .search-box {
@@ -325,18 +428,24 @@
                 padding: 0 0.5rem;
             }
             
+            .menu-toggle {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .menu-toggle span {
+                width: 20px;
+            }
+            
+            .side-nav {
+                width: 260px;
+                left: -260px;
+            }
+            
             h1 {
                 font-size: 1.4rem;
                 margin-bottom: 0.85rem;
             }
-            
-            .nav-list {
-                gap: 0.3rem;
-                justify-content: space-around;
-            }
-            
-            .nav-item a {
-                padding: 0.45rem 0.6rem;
                 font-size: 0.8rem;
                 flex: 1;
                 text-align: center;
@@ -436,9 +545,14 @@
 <body>
     <header class="header">
         <nav class="nav-container">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <div class="lang-switcher">
-                <button class="lang-btn active" data-lang="en" onclick="switchLanguage('en')">EN</button>
-                <button class="lang-btn" data-lang="te" onclick="switchLanguage('te')">తెలుగు</button>
+                <button class="lang-btn" id="langBtnEn" data-lang="en" onclick="switchLanguage('en')" style="display: none;">EN</button>
+                <button class="lang-btn" id="langBtnTe" data-lang="te" onclick="switchLanguage('te')" style="display: none;">తెలుగు</button>
             </div>
             <ul class="nav-list">
                 <li class="nav-item"><a href="index.html" data-i18n="nav.home">Home</a></li>
@@ -448,6 +562,16 @@
             </ul>
         </nav>
     </header>
+    
+    <div class="side-nav-overlay" id="sideNavOverlay"></div>
+    <nav class="side-nav" id="sideNav">
+        <ul class="side-nav-list">
+            <li class="side-nav-item"><a href="index.html" data-i18n="nav.home">Home</a></li>
+            <li class="side-nav-item"><a href="agrahara-ruchulu.html" data-i18n="nav.agrahara">Agrahara Ruchulu</a></li>
+            <li class="side-nav-item"><a href="guntur-kaaram.html" class="active" data-i18n="nav.guntur">Guntur Kaaram</a></li>
+            <li class="side-nav-item"><a href="aritaaku.html" data-i18n="nav.aritaaku">Aritaaku</a></li>
+        </ul>
+    </nav>
     
     <div class="container">
         <h1 data-i18n="page.title.guntur_kaaram">Guntur Kaaram</h1>
@@ -548,27 +672,31 @@
         
         // Initialize language on page load
         function initLanguage() {
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === currentLang) {
-                    btn.classList.add('active');
-                }
-            });
+            updateLanguageButton();
             updatePageLanguage();
+        }
+        
+        // Update which language button is visible
+        function updateLanguageButton() {
+            const btnEn = document.getElementById('langBtnEn');
+            const btnTe = document.getElementById('langBtnTe');
+            
+            if (currentLang === 'en') {
+                // Show Telugu button, hide EN button
+                if (btnEn) btnEn.style.display = 'none';
+                if (btnTe) btnTe.style.display = 'flex';
+            } else {
+                // Show EN button, hide Telugu button
+                if (btnEn) btnEn.style.display = 'flex';
+                if (btnTe) btnTe.style.display = 'none';
+            }
         }
         
         // Switch language
         function switchLanguage(lang) {
             currentLang = lang;
             localStorage.setItem('language', lang);
-            
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === lang) {
-                    btn.classList.add('active');
-                }
-            });
-            
+            updateLanguageButton();
             updatePageLanguage();
         }
         
@@ -718,6 +846,41 @@
         
         // Initialize on page load
         initLanguage();
+        
+        // Side navigation toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sideNav = document.getElementById('sideNav');
+        const sideNavOverlay = document.getElementById('sideNavOverlay');
+        
+        function toggleSideNav() {
+            menuToggle.classList.toggle('active');
+            sideNav.classList.toggle('active');
+            sideNavOverlay.classList.toggle('active');
+            document.body.style.overflow = sideNav.classList.contains('active') ? 'hidden' : '';
+        }
+        
+        function closeSideNav() {
+            menuToggle.classList.remove('active');
+            sideNav.classList.remove('active');
+            sideNavOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', toggleSideNav);
+        }
+        
+        if (sideNavOverlay) {
+            sideNavOverlay.addEventListener('click', closeSideNav);
+        }
+        
+        // Close side nav when clicking on a link
+        const sideNavLinks = document.querySelectorAll('.side-nav-item a');
+        sideNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                setTimeout(closeSideNav, 100);
+            });
+        });
         
         function toggleAccordion(categoryId) {
             const item = document.querySelector(`#content-${categoryId}`).closest('.accordion-item');
