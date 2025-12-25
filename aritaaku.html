@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Aritaaku - Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #8B3A3A 0%, #7B2D2D 50%, #8B0000 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding-bottom: 2rem;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: rgba(139, 0, 0, 0.95);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            padding: 0.9rem 0;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lang-switcher {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1.5px solid #FFEAA7;
+            color: #FFEAA7;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            touch-action: manipulation;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(255, 234, 167, 0.3);
+            border-color: #FFD700;
+        }
+        
+        .lang-btn.active {
+            background: #DAA520;
+            border-color: #DAA520;
+            color: #8B0000;
+        }
+        
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            flex: 1;
+        }
+        
+        .nav-item a {
+            text-decoration: none;
+            color: #FFEAA7;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            font-size: 0.95rem;
+        }
+        
+        .nav-item a:hover {
+            background: rgba(218, 165, 32, 0.3);
+            color: #FFD700;
+            transform: translateY(-1px);
+        }
+        
+        .nav-item a.active {
+            background: #DAA520;
+            color: #8B0000;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(218, 165, 32, 0.4);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #FFEAA7;
+            margin-bottom: 1.25rem;
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+            letter-spacing: -0.5px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 0.95rem;
+            border: 2px solid #DAA520;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            background: #FFF8DC;
+            color: #5C3A00;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        
+        .search-box::placeholder {
+            color: #8B7355;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 4px 12px rgba(218, 165, 32, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .accordion-item {
+            background: linear-gradient(135deg, #FFF8DC 0%, #FFEAA7 100%);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+            overflow: hidden;
+            border: 1.5px solid #DAA520;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .accordion-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .accordion-header {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, #FFEAA7 0%, #FFD700 100%);
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #8B0000;
+            transition: all 0.25s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .accordion-header:hover {
+            background: linear-gradient(135deg, #FFD700 0%, #FFEAA7 100%);
+        }
+        
+        .accordion-title {
+            flex: 1;
+            letter-spacing: -0.2px;
+        }
+        
+        .accordion-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.85rem;
+            color: #8B0000;
+        }
+        
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #FFF8DC;
+        }
+        
+        .accordion-item.active .accordion-content {
+            max-height: 5000px;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .menu-item {
+            padding: 0.7rem 1.25rem;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.25);
+            color: #5C3A00;
+            font-size: 0.95rem;
+            transition: background-color 0.2s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: rgba(255, 248, 220, 0.6);
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #FFEAA7;
+            font-size: 1rem;
+            background: rgba(139, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 2px solid #DAA520;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem 0 1.5rem;
+            }
+            
+            .container {
+                padding: 0 0.75rem;
+            }
+            
+            .header {
+                padding: 0.75rem 0;
+                margin-bottom: 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 0.75rem;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .lang-switcher {
+                order: -1;
+            }
+            
+            .lang-btn {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.8rem;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 1rem;
+                line-height: 1.2;
+            }
+            
+            .nav-list {
+                gap: 0.4rem;
+            }
+            
+            .nav-item a {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.85rem;
+                min-height: 36px;
+                display: inline-flex;
+                align-items: center;
+            }
+            
+            .search-box {
+                padding: 0.75rem 0.9rem;
+                font-size: 16px;
+                margin-bottom: 1rem;
+                border-width: 2px;
+                min-height: 44px;
+            }
+            
+            .accordion-header {
+                padding: 0.85rem 1rem;
+                font-size: 0.95rem;
+                min-height: 48px;
+            }
+            
+            .accordion-item {
+                margin-bottom: 0.6rem;
+                border-width: 1.5px;
+            }
+            
+            .menu-item {
+                padding: 0.65rem 1rem;
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+            
+            .no-results {
+                padding: 1.5rem;
+                font-size: 0.95rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 0.25rem 0 1.25rem;
+            }
+            
+            .container {
+                padding: 0 0.5rem;
+            }
+            
+            .header {
+                padding: 0.6rem 0;
+                margin-bottom: 0.85rem;
+            }
+            
+            .nav-container {
+                padding: 0 0.5rem;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 0.85rem;
+            }
+            
+            .nav-list {
+                gap: 0.3rem;
+                justify-content: space-around;
+            }
+            
+            .nav-item a {
+                padding: 0.45rem 0.6rem;
+                font-size: 0.8rem;
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .search-box {
+                padding: 0.7rem 0.85rem;
+                font-size: 16px;
+                margin-bottom: 0.9rem;
+            }
+            
+            .accordion-header {
+                padding: 0.75rem 0.9rem;
+                font-size: 0.9rem;
+            }
+            
+            .accordion-item {
+                margin-bottom: 0.5rem;
+            }
+            
+            .menu-item {
+                padding: 0.6rem 0.9rem;
+                font-size: 0.875rem;
+            }
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 25px;
+            right: 25px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5);
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+            background: #20BA5A;
+        }
+        
+        .whatsapp-float svg {
+            width: 35px;
+            height: 35px;
+            fill: white;
+        }
+        
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 56px;
+                height: 56px;
+                bottom: 18px;
+                right: 18px;
+                font-size: 28px;
+                box-shadow: 0 3px 12px rgba(37, 211, 102, 0.45);
+            }
+            
+            .whatsapp-float:active {
+                transform: scale(0.95);
+            }
+            
+            .whatsapp-float svg {
+                width: 32px;
+                height: 32px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .whatsapp-float {
+                width: 52px;
+                height: 52px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .whatsapp-float svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                <button class="lang-btn" data-lang="te" onclick="switchLanguage('te')">తెలుగు</button>
+            </div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li class="nav-item"><a href="agrahara-ruchulu.html" data-i18n="nav.agrahara">Agrahara Ruchulu</a></li>
+                <li class="nav-item"><a href="guntur-kaaram.html" data-i18n="nav.guntur">Guntur Kaaram</a></li>
+                <li class="nav-item"><a href="aritaaku.html" class="active" data-i18n="nav.aritaaku">Aritaaku</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1 data-i18n="page.title.aritaaku">Aritaaku</h1>
+        
+        <input type="text" class="search-box" id="searchBox" data-i18n-placeholder="search.placeholder" placeholder="Search categories and items...">
+        
+        <div id="accordionContainer">
+            
+        <div class="accordion-item" data-category="Snacks" data-i18n-category="snacks">
+            <button class="accordion-header" onclick="toggleAccordion('snacks')">
+                <span class="accordion-title">Snacks</span>
+                <span class="accordion-icon" id="icon-snacks">▼</span>
+            </button>
+            <div class="accordion-content" id="content-snacks">
+                <div class="menu-item" data-i18n-item="Mirchi Bajji">Mirchi Bajji</div>
+<div class="menu-item" data-i18n-item="Aloo Bajji">Aloo Bajji</div>
+<div class="menu-item" data-i18n-item="Aritikay Bajji">Aritikay Bajji</div>
+<div class="menu-item" data-i18n-item="Beerakaya Bajji">Beerakaya Bajji</div>
+<div class="menu-item" data-i18n-item="Onion Bajji">Onion Bajji</div>
+<div class="menu-item" data-i18n-item="Masala Vada">Masala Vada</div>
+<div class="menu-item" data-i18n-item="Sabudana Vada">Sabudana Vada</div>
+<div class="menu-item" data-i18n-item="Sorakaya Garelu">Sorakaya Garelu</div>
+<div class="menu-item" data-i18n-item="Kanda Vada">Kanda Vada</div>
+<div class="menu-item" data-i18n-item="Onion Pakodi">Onion Pakodi</div>
+            </div>
+        </div>
+        
+        <div class="accordion-item" data-category="Dal" data-i18n-category="dal">
+            <button class="accordion-header" onclick="toggleAccordion('dal')">
+                <span class="accordion-title">Dal</span>
+                <span class="accordion-icon" id="icon-dal">▼</span>
+            </button>
+            <div class="accordion-content" id="content-dal">
+                <div class="menu-item" data-i18n-item="Tomato Pappu">Tomato Pappu</div>
+<div class="menu-item" data-i18n-item="Akukoora Pappu">Akukoora Pappu</div>
+<div class="menu-item" data-i18n-item="Mango Pappu">Mango Pappu</div>
+<div class="menu-item" data-i18n-item="Dosakaya Pappu">Dosakaya Pappu</div>
+<div class="menu-item" data-i18n-item="Nimmakaya Pappu">Nimmakaya Pappu</div>
+            </div>
+        </div>
+        
+        <div class="accordion-item" data-category="Stew" data-i18n-category="stew">
+            <button class="accordion-header" onclick="toggleAccordion('stew')">
+                <span class="accordion-title">Stew</span>
+                <span class="accordion-icon" id="icon-stew">▼</span>
+            </button>
+            <div class="accordion-content" id="content-stew">
+                <div class="menu-item" data-i18n-item="Sambar">Sambar</div>
+<div class="menu-item" data-i18n-item="Mukkala Pulusu">Mukkala Pulusu</div>
+<div class="menu-item" data-i18n-item="Pacchi Pulusu">Pacchi Pulusu</div>
+<div class="menu-item" data-i18n-item="Gummadikaya Pulusu">Gummadikaya Pulusu</div>
+<div class="menu-item" data-i18n-item="Tomato Rasam">Tomato Rasam</div>
+<div class="menu-item" data-i18n-item="Pappu Charu">Pappu Charu</div>
+<div class="menu-item" data-i18n-item="Majjiga Pulusu">Majjiga Pulusu</div>
+            </div>
+        </div>
+        
+        <div class="accordion-item" data-category="Roti Pacchadi" data-i18n-category="roti_pacchadi">
+            <button class="accordion-header" onclick="toggleAccordion('roti-pacchadi')">
+                <span class="accordion-title">Roti Pacchadi</span>
+                <span class="accordion-icon" id="icon-roti-pacchadi">▼</span>
+            </button>
+            <div class="accordion-content" id="content-roti-pacchadi">
+                <div class="menu-item" data-i18n-item="Dosakaya Mukkala Pacchadi">Dosakaya Mukkala Pacchadi</div>
+<div class="menu-item" data-i18n-item="Kobbari Pacchadi">Kobbari Pacchadi</div>
+<div class="menu-item" data-i18n-item="Tomato Pacchadi">Tomato Pacchadi</div>
+<div class="menu-item" data-i18n-item="Kothimeera Ullipaya Kaaram">Kothimeera Ullipaya Kaaram</div>
+<div class="menu-item" data-i18n-item="Gongura Pacchadi">Gongura Pacchadi</div>
+<div class="menu-item" data-i18n-item="Karivepaku Pacchadi">Karivepaku Pacchadi</div>
+<div class="menu-item" data-i18n-item="Pudina Pacchadi">Pudina Pacchadi</div>
+<div class="menu-item" data-i18n-item="Kobbari Mamidakaya Pacchadi">Kobbari Mamidakaya Pacchadi</div>
+<div class="menu-item" data-i18n-item="Ulli Kaaram">Ulli Kaaram</div>
+<div class="menu-item" data-i18n-item="Dondakaya Pacchadi">Dondakaya Pacchadi</div>
+<div class="menu-item" data-i18n-item="Beerakaya Pacchadi">Beerakaya Pacchadi</div>
+            </div>
+        </div>
+        
+        <div class="accordion-item" data-category="Curd Varieties" data-i18n-category="curd_varieties">
+            <button class="accordion-header" onclick="toggleAccordion('curd-varieties')">
+                <span class="accordion-title">Curd Varieties</span>
+                <span class="accordion-icon" id="icon-curd-varieties">▼</span>
+            </button>
+            <div class="accordion-content" id="content-curd-varieties">
+                <div class="menu-item" data-i18n-item="Menthi Majjiga">Menthi Majjiga</div>
+<div class="menu-item" data-i18n-item="Kobbari Perugu Pacchadi">Kobbari Perugu Pacchadi</div>
+<div class="menu-item" data-i18n-item="Tomato Perugu Pacchadi">Tomato Perugu Pacchadi</div>
+<div class="menu-item" data-i18n-item="Vankaya Perugu Pacchadi">Vankaya Perugu Pacchadi</div>
+            </div>
+        </div>
+        
+        <div class="accordion-item" data-category="Curries" data-i18n-category="curries">
+            <button class="accordion-header" onclick="toggleAccordion('curries')">
+                <span class="accordion-title">Curries</span>
+                <span class="accordion-icon" id="icon-curries">▼</span>
+            </button>
+            <div class="accordion-content" id="content-curries">
+                <div class="menu-item" data-i18n-item="Kanda Bacchali">Kanda Bacchali</div>
+<div class="menu-item" data-i18n-item="Gutti Vankaya - Podi koora">Gutti Vankaya - Podi koora</div>
+<div class="menu-item" data-i18n-item="Vankaya Ulli Kaaram">Vankaya Ulli Kaaram</div>
+<div class="menu-item" data-i18n-item="Vankaya Allam Pacchimirchi">Vankaya Allam Pacchimirchi</div>
+<div class="menu-item" data-i18n-item="Vankaya Kaaram Petti">Vankaya Kaaram Petti</div>
+<div class="menu-item" data-i18n-item="Chamadumpa fry">Chamadumpa fry</div>
+<div class="menu-item" data-i18n-item="Bangaladumpa Fry">Bangaladumpa Fry</div>
+<div class="menu-item" data-i18n-item="Vankaya Bangaladumpa Curry">Vankaya Bangaladumpa Curry</div>
+<div class="menu-item" data-i18n-item="Aritikaya Mudda Koora">Aritikaya Mudda Koora</div>
+<div class="menu-item" data-i18n-item="Aritikaya Fry">Aritikaya Fry</div>
+<div class="menu-item" data-i18n-item="Bendakaya Pakodi">Bendakaya Pakodi</div>
+<div class="menu-item" data-i18n-item="Bendakaya Palli Fry">Bendakaya Palli Fry</div>
+<div class="menu-item" data-i18n-item="Bendakaya Kobbari Fry">Bendakaya Kobbari Fry</div>
+<div class="menu-item" data-i18n-item="Dondakaya Kobbari Fry">Dondakaya Kobbari Fry</div>
+<div class="menu-item" data-i18n-item="Mulakkada Tomato Cashew Curry">Mulakkada Tomato Cashew Curry</div>
+<div class="menu-item" data-i18n-item="Raw Mango Cashew Curry">Raw Mango Cashew Curry</div>
+<div class="menu-item" data-i18n-item="Bagara Baingan">Bagara Baingan</div>
+            </div>
+        </div>
+        
+        <div class="accordion-item" data-category="Biryani" data-i18n-category="biryani">
+            <button class="accordion-header" onclick="toggleAccordion('biryani')">
+                <span class="accordion-title">Biryani</span>
+                <span class="accordion-icon" id="icon-biryani">▼</span>
+            </button>
+            <div class="accordion-content" id="content-biryani">
+                <div class="menu-item" data-i18n-item="Gongura Pulav">Gongura Pulav</div>
+<div class="menu-item" data-i18n-item="Gundamma Guttivankaya Pulav">Gundamma Guttivankaya Pulav</div>
+<div class="menu-item" data-i18n-item="P4-Palnadu Pacchimirchi Panner Pulav">P4-Palnadu Pacchimirchi Panner Pulav</div>
+<div class="menu-item" data-i18n-item="Veg Dum Biryani">Veg Dum Biryani</div>
+<div class="menu-item" data-i18n-item="Cut Mirchi Biryani">Cut Mirchi Biryani</div>
+            </div>
+        </div>
+        
+        <div class="accordion-item" data-category="Desserts" data-i18n-category="desserts">
+            <button class="accordion-header" onclick="toggleAccordion('desserts')">
+                <span class="accordion-title">Desserts</span>
+                <span class="accordion-icon" id="icon-desserts">▼</span>
+            </button>
+            <div class="accordion-content" id="content-desserts">
+                <div class="menu-item" data-i18n-item="Gulab jamun">Gulab jamun</div>
+<div class="menu-item" data-i18n-item="Bread Halwa">Bread Halwa</div>
+<div class="menu-item" data-i18n-item="Carrot Halwa">Carrot Halwa</div>
+<div class="menu-item" data-i18n-item="Semiya Saggubiyam Payasam">Semiya Saggubiyam Payasam</div>
+<div class="menu-item" data-i18n-item="Paramannam">Paramannam</div>
+<div class="menu-item" data-i18n-item="Sweet Pongal">Sweet Pongal</div>
+            </div>
+        </div>
+        
+        </div>
+        
+        <div id="noResults" class="no-results" style="display: none;" data-i18n="search.noResults">
+            No items found matching your search.
+        </div>
+    </div>
+    
+    <script>
+        // Translation data
+        const translations = {
+            en: {
+                nav: {
+                    home: "Home",
+                    agrahara: "Agrahara Ruchulu",
+                    guntur: "Guntur Kaaram",
+                    aritaaku: "Aritaaku"
+                },
+                page: {
+                    title: {
+                        agrahara_ruchulu: "Agrahara Ruchulu",
+                        guntur_kaaram: "Guntur Kaaram",
+                        aritaaku: "Aritaaku"
+                    }
+                },
+                search: {
+                    placeholder: "Search categories and items...",
+                    noResults: "No items found matching your search."
+                }
+            },
+            te: {
+                nav: {
+                    home: "హోమ్",
+                    agrahara: "అగ్రహార రుచులు",
+                    guntur: "గుంటూర్ కారం",
+                    aritaaku: "అరితాకు"
+                },
+                page: {
+                    title: {
+                        agrahara_ruchulu: "అగ్రహార రుచులు",
+                        guntur_kaaram: "గుంటూర్ కారం",
+                        aritaaku: "అరితాకు"
+                    }
+                },
+                search: {
+                    placeholder: "వర్గాలు మరియు అంశాలను శోధించండి...",
+                    noResults: "మీ శోధనకు సరిపడిన అంశాలు ఏవీ కనుగొనబడలేదు."
+                }
+            }
+        };
+        
+        // Get current language from localStorage or default to English
+        let currentLang = localStorage.getItem('language') || 'en';
+        
+        // Initialize language on page load
+        function initLanguage() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === currentLang) {
+                    btn.classList.add('active');
+                }
+            });
+            updatePageLanguage();
+        }
+        
+        // Switch language
+        function switchLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            updatePageLanguage();
+        }
+        
+        // Menu item translations (generated from Excel data)
+        const menuTranslationsData = {
+                "categories": {
+                                "snacks": {
+                                                "en": "Snacks",
+                                                "te": "స్నాక్స్"
+                                },
+                                "dal": {
+                                                "en": "Dal",
+                                                "te": "పప్పు"
+                                },
+                                "stew": {
+                                                "en": "Stew",
+                                                "te": "స్టూలు"
+                                },
+                                "roti_pacchadi": {
+                                                "en": "Roti Pacchadi",
+                                                "te": "రొటీ పచ్చడి"
+                                },
+                                "curd_varieties": {
+                                                "en": "Curd Varieties",
+                                                "te": "పెరుగు రకాలు"
+                                },
+                                "curries": {
+                                                "en": "Curries",
+                                                "te": "కూరలు"
+                                },
+                                "biryani": {
+                                                "en": "Biryani",
+                                                "te": "బిర్యాని"
+                                },
+                                "desserts": {
+                                                "en": "Desserts",
+                                                "te": "మిఠాయిలు"
+                                }
+                },
+                "items": {
+                                "Mirchi Bajji": {
+                                                "en": "Mirchi Bajji",
+                                                "te": "మిర్చి బజ్జి"
+                                },
+                                "Aloo Bajji": {
+                                                "en": "Aloo Bajji",
+                                                "te": "ఉర్లగడ్డ బజ్జి"
+                                },
+                                "Aritikay Bajji": {
+                                                "en": "Aritikay Bajji",
+                                                "te": "అరితకాయ బజ్జి"
+                                },
+                                "Beerakaya Bajji": {
+                                                "en": "Beerakaya Bajji",
+                                                "te": "బీరకాయ బజ్జి"
+                                },
+                                "Onion Bajji": {
+                                                "en": "Onion Bajji",
+                                                "te": "ఉల్లిపాయ బజ్జి"
+                                },
+                                "Masala Vada": {
+                                                "en": "Masala Vada",
+                                                "te": "మసాల వడ"
+                                },
+                                "Sabudana Vada": {
+                                                "en": "Sabudana Vada",
+                                                "te": "సబుదానా వడ"
+                                },
+                                "Sorakaya Garelu": {
+                                                "en": "Sorakaya Garelu",
+                                                "te": "సొరకాయ గరెలు"
+                                },
+                                "Kanda Vada": {
+                                                "en": "Kanda Vada",
+                                                "te": "కంద వడ"
+                                },
+                                "Onion Pakodi": {
+                                                "en": "Onion Pakodi",
+                                                "te": "ఉల్లిపాయ పకోడి"
+                                },
+                                "Tomato Pappu": {
+                                                "en": "Tomato Pappu",
+                                                "te": "టమాట పప్పు"
+                                },
+                                "Akukoora Pappu": {
+                                                "en": "Akukoora Pappu",
+                                                "te": "ఆకుకూర పప్పు"
+                                },
+                                "Mango Pappu": {
+                                                "en": "Mango Pappu",
+                                                "te": "మామిడి పప్పు"
+                                },
+                                "Dosakaya Pappu": {
+                                                "en": "Dosakaya Pappu",
+                                                "te": "దోసకాయ పప్పు"
+                                },
+                                "Nimmakaya Pappu": {
+                                                "en": "Nimmakaya Pappu",
+                                                "te": "నిమ్మకాయ పప్పు"
+                                },
+                                "Sambar": {
+                                                "en": "Sambar",
+                                                "te": "సాంబార్"
+                                },
+                                "Mukkala Pulusu": {
+                                                "en": "Mukkala Pulusu",
+                                                "te": "ముక్కల పులుసు"
+                                },
+                                "Pacchi Pulusu": {
+                                                "en": "Pacchi Pulusu",
+                                                "te": "పచ్చి పులుసు"
+                                },
+                                "Gummadikaya Pulusu": {
+                                                "en": "Gummadikaya Pulusu",
+                                                "te": "గుమ్మడికాయ పులుసు"
+                                },
+                                "Tomato Rasam": {
+                                                "en": "Tomato Rasam",
+                                                "te": "టమాట రసం"
+                                },
+                                "Pappu Charu": {
+                                                "en": "Pappu Charu",
+                                                "te": "పప్పు చారు"
+                                },
+                                "Majjiga Pulusu": {
+                                                "en": "Majjiga Pulusu",
+                                                "te": "మజ్జిగ పులుసు"
+                                },
+                                "Dosakaya Mukkala Pacchadi": {
+                                                "en": "Dosakaya Mukkala Pacchadi",
+                                                "te": "దోసకాయ ముక్కల పచ్చడి"
+                                },
+                                "Kobbari Pacchadi": {
+                                                "en": "Kobbari Pacchadi",
+                                                "te": "కొబ్బరి పచ్చడి"
+                                },
+                                "Tomato Pacchadi": {
+                                                "en": "Tomato Pacchadi",
+                                                "te": "టమాట పచ్చడి"
+                                },
+                                "Kothimeera Ullipaya Kaaram": {
+                                                "en": "Kothimeera Ullipaya Kaaram",
+                                                "te": "కొత్తిమీర ఉల్లిపాయ కారం"
+                                },
+                                "Gongura Pacchadi": {
+                                                "en": "Gongura Pacchadi",
+                                                "te": "గోంగూర పచ్చడి"
+                                },
+                                "Karivepaku Pacchadi": {
+                                                "en": "Karivepaku Pacchadi",
+                                                "te": "కరివేపాకు పచ్చడి"
+                                },
+                                "Pudina Pacchadi": {
+                                                "en": "Pudina Pacchadi",
+                                                "te": "పుదీనా పచ్చడి"
+                                },
+                                "Kobbari Mamidakaya Pacchadi": {
+                                                "en": "Kobbari Mamidakaya Pacchadi",
+                                                "te": "కొబ్బరి మామిడకాయ పచ్చడి"
+                                },
+                                "Ulli Kaaram": {
+                                                "en": "Ulli Kaaram",
+                                                "te": "ఉల్లి కారం"
+                                },
+                                "Dondakaya Pacchadi": {
+                                                "en": "Dondakaya Pacchadi",
+                                                "te": "దొండకాయ పచ్చడి"
+                                },
+                                "Beerakaya Pacchadi": {
+                                                "en": "Beerakaya Pacchadi",
+                                                "te": "బీరకాయ పచ్చడి"
+                                },
+                                "Menthi Majjiga": {
+                                                "en": "Menthi Majjiga",
+                                                "te": "మెంతి మజ్జిగ"
+                                },
+                                "Kobbari Perugu Pacchadi": {
+                                                "en": "Kobbari Perugu Pacchadi",
+                                                "te": "కొబ్బరి పెరుగు పచ్చడి"
+                                },
+                                "Tomato Perugu Pacchadi": {
+                                                "en": "Tomato Perugu Pacchadi",
+                                                "te": "టమాట పెరుగు పచ్చడి"
+                                },
+                                "Vankaya Perugu Pacchadi": {
+                                                "en": "Vankaya Perugu Pacchadi",
+                                                "te": "వంకాయ పెరుగు పచ్చడి"
+                                },
+                                "Kanda Bacchali": {
+                                                "en": "Kanda Bacchali",
+                                                "te": "కంద బచ్చలి"
+                                },
+                                "Gutti Vankaya - Podi koora": {
+                                                "en": "Gutti Vankaya - Podi koora",
+                                                "te": "గుట్టి వంకాయ - పొడి కూర"
+                                },
+                                "Vankaya Ulli Kaaram": {
+                                                "en": "Vankaya Ulli Kaaram",
+                                                "te": "వంకాయ ఉల్లి కారం"
+                                },
+                                "Vankaya Allam Pacchimirchi": {
+                                                "en": "Vankaya Allam Pacchimirchi",
+                                                "te": "వంకాయ అల్లం పచ్చిమిర్చి"
+                                },
+                                "Vankaya Kaaram Petti": {
+                                                "en": "Vankaya Kaaram Petti",
+                                                "te": "వంకాయ కారం పెట్టి"
+                                },
+                                "Chamadumpa fry": {
+                                                "en": "Chamadumpa fry",
+                                                "te": "చమడుంప వేపుడు"
+                                },
+                                "Bangaladumpa Fry": {
+                                                "en": "Bangaladumpa Fry",
+                                                "te": "బంగాళదుంప వేపుడు"
+                                },
+                                "Vankaya Bangaladumpa Curry": {
+                                                "en": "Vankaya Bangaladumpa Curry",
+                                                "te": "వంకాయ బంగాళదుంప కూర"
+                                },
+                                "Aritikaya Mudda Koora": {
+                                                "en": "Aritikaya Mudda Koora",
+                                                "te": "అరితకాయ ముద్ద కూర"
+                                },
+                                "Aritikaya Fry": {
+                                                "en": "Aritikaya Fry",
+                                                "te": "అరితకాయ వేపుడు"
+                                },
+                                "Bendakaya Pakodi": {
+                                                "en": "Bendakaya Pakodi",
+                                                "te": "బెండకాయ పకోడి"
+                                },
+                                "Bendakaya Palli Fry": {
+                                                "en": "Bendakaya Palli Fry",
+                                                "te": "బెండకాయ పల్లి వేపుడు"
+                                },
+                                "Bendakaya Kobbari Fry": {
+                                                "en": "Bendakaya Kobbari Fry",
+                                                "te": "బెండకాయ కొబ్బరి వేపుడు"
+                                },
+                                "Dondakaya Kobbari Fry": {
+                                                "en": "Dondakaya Kobbari Fry",
+                                                "te": "దొండకాయ కొబ్బరి వేపుడు"
+                                },
+                                "Mulakkada Tomato Cashew Curry": {
+                                                "en": "Mulakkada Tomato Cashew Curry",
+                                                "te": "ములక్కద టమాట జీడిపప్పు కూర"
+                                },
+                                "Raw Mango Cashew Curry": {
+                                                "en": "Raw Mango Cashew Curry",
+                                                "te": "కాచి మామిడి జీడిపప్పు కూర"
+                                },
+                                "Bagara Baingan": {
+                                                "en": "Bagara Baingan",
+                                                "te": "బాగర బైంగన్"
+                                },
+                                "Gongura Pulav": {
+                                                "en": "Gongura Pulav",
+                                                "te": "గోంగూర పులావ్"
+                                },
+                                "Gundamma Guttivankaya Pulav": {
+                                                "en": "Gundamma Guttivankaya Pulav",
+                                                "te": "గుండమ్మ గుట్టివంకాయ పులావ్"
+                                },
+                                "P4-Palnadu Pacchimirchi Panner Pulav": {
+                                                "en": "P4-Palnadu Pacchimirchi Panner Pulav",
+                                                "te": "పీ4-పాలనాడు పచ్చిమిర్చి పనీర్ పులావ్"
+                                },
+                                "Veg Dum Biryani": {
+                                                "en": "Veg Dum Biryani",
+                                                "te": "వెజ్ డమ్ బిర్యాని"
+                                },
+                                "Cut Mirchi Biryani": {
+                                                "en": "Cut Mirchi Biryani",
+                                                "te": "కట్ మిర్చి బిర్యాని"
+                                },
+                                "Gulab jamun": {
+                                                "en": "Gulab jamun",
+                                                "te": "గులాబ్ జామూన్"
+                                },
+                                "Bread Halwa": {
+                                                "en": "Bread Halwa",
+                                                "te": "బ్రెడ్ హల్వా"
+                                },
+                                "Carrot Halwa": {
+                                                "en": "Carrot Halwa",
+                                                "te": "క్యారెట్ హల్వా"
+                                },
+                                "Semiya Saggubiyam Payasam": {
+                                                "en": "Semiya Saggubiyam Payasam",
+                                                "te": "సేమియ సగ్గుబియం పాయసం"
+                                },
+                                "Paramannam": {
+                                                "en": "Paramannam",
+                                                "te": "పరమాన్నం"
+                                },
+                                "Sweet Pongal": {
+                                                "en": "Sweet Pongal",
+                                                "te": "మిఠాయి పొంగళ్"
+                                }
+                }
+};
+        
+        // Update all translatable elements
+        function updatePageLanguage() {
+            const langData = translations[currentLang];
+            
+            // Update elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                const keys = key.split('.');
+                let value = langData;
+                for (let k of keys) {
+                    value = value[k];
+                }
+                if (value) el.textContent = value;
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.dataset.i18nPlaceholder;
+                const keys = key.split('.');
+                let value = langData;
+                for (let k of keys) {
+                    value = value[k];
+                }
+                if (value) el.placeholder = value;
+            });
+            
+            // Update menu categories
+            document.querySelectorAll('[data-i18n-category]').forEach(el => {
+                const catKey = el.dataset.i18nCategory;
+                const catTrans = menuTranslationsData.categories[catKey];
+                if (catTrans) {
+                    const translated = catTrans[currentLang] || el.dataset.category;
+                    const titleEl = el.querySelector('.accordion-title');
+                    if (titleEl) {
+                        titleEl.textContent = translated;
+                    }
+                }
+            });
+            
+            // Update menu items
+            document.querySelectorAll('[data-i18n-item]').forEach(el => {
+                const itemKey = el.dataset.i18nItem;
+                const itemTrans = menuTranslationsData.items[itemKey];
+                if (itemTrans) {
+                    const translated = itemTrans[currentLang] || itemKey;
+                    el.textContent = translated;
+                } else {
+                    el.textContent = itemKey;
+                }
+            });
+        }
+        
+        // Initialize on page load
+        initLanguage();
+        
+        function toggleAccordion(categoryId) {
+            const item = document.querySelector(`#content-${categoryId}`).closest('.accordion-item');
+            const isActive = item.classList.contains('active');
+            
+            if (isActive) {
+                item.classList.remove('active');
+            } else {
+                item.classList.add('active');
+            }
+        }
+        
+        // Search functionality
+        const searchBox = document.getElementById('searchBox');
+        const accordionContainer = document.getElementById('accordionContainer');
+        const noResults = document.getElementById('noResults');
+        
+        searchBox.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const accordionItems = accordionContainer.querySelectorAll('.accordion-item');
+            let hasResults = false;
+            
+            if (!searchTerm) {
+                // Reset to default state when search is cleared
+                accordionItems.forEach(item => {
+                    item.style.display = '';
+                    const menuItems = item.querySelectorAll('.menu-item');
+                    menuItems.forEach(menuItem => {
+                        menuItem.style.display = '';
+                    });
+                    // Close all accordions by default
+                    item.classList.remove('active');
+                });
+                noResults.style.display = 'none';
+                return;
+            }
+            
+            accordionItems.forEach(item => {
+                const category = item.getAttribute('data-category').toLowerCase();
+                const menuItems = item.querySelectorAll('.menu-item');
+                let categoryMatches = category.includes(searchTerm);
+                let itemMatches = false;
+                
+                // Check if any items match
+                menuItems.forEach(menuItem => {
+                    const itemText = menuItem.textContent.toLowerCase();
+                    if (itemText.includes(searchTerm)) {
+                        itemMatches = true;
+                    }
+                });
+                
+                // If category matches, show all items; otherwise show only matching items
+                menuItems.forEach(menuItem => {
+                    const itemText = menuItem.textContent.toLowerCase();
+                    if (categoryMatches || itemText.includes(searchTerm)) {
+                        menuItem.style.display = '';
+                    } else {
+                        menuItem.style.display = 'none';
+                    }
+                });
+                
+                if (categoryMatches || itemMatches) {
+                    item.style.display = '';
+                    item.classList.add('active'); // Expand matching accordions
+                    hasResults = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            noResults.style.display = !hasResults ? 'block' : 'none';
+        });
+    </script>
+    
+    <a href="https://chat.whatsapp.com/ICyAQQFbLfS6CZi71gNoc3" target="_blank" class="whatsapp-float" aria-label="Join WhatsApp Group">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+    </a>
+</body>
+</html>
