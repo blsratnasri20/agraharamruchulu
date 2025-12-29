@@ -885,7 +885,7 @@ def generate_menu_page(sheet_name, page_info):
                 <span></span>
                 <span></span>
             </button>
-            <div class="lang-switcher">
+            <div class="lang-switcher" style="display: none;">
                 <button class="lang-btn" id="langBtnEn" data-lang="en" onclick="switchLanguage('en')" style="display: none;">EN</button>
                 <button class="lang-btn" id="langBtnTe" data-lang="te" onclick="switchLanguage('te')" style="display: none;">తెలుగు</button>
             </div>
@@ -1504,7 +1504,7 @@ def generate_index_page():
     </style>
 </head>
 <body>
-    <div class="lang-switcher">
+    <div class="lang-switcher" style="display: none;">
         <button class="lang-btn" id="langBtnEn" data-lang="en" onclick="switchLanguage('en')" style="display: none;">EN</button>
         <button class="lang-btn" id="langBtnTe" data-lang="te" onclick="switchLanguage('te')" style="display: none;">తెలుగు</button>
     </div>
