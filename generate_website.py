@@ -875,6 +875,115 @@ def generate_menu_page(sheet_name, page_info):
                 height: 30px;
             }}
         }}
+        
+        .promo-modal-overlay {{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            backdrop-filter: blur(5px);
+        }}
+        
+        .promo-modal-overlay.active {{
+            display: flex;
+        }}
+        
+        .promo-modal-content {{
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease-out;
+        }}
+        
+        @keyframes modalFadeIn {{
+            from {{
+                opacity: 0;
+                transform: scale(0.9);
+            }}
+            to {{
+                opacity: 1;
+                transform: scale(1);
+            }}
+        }}
+        
+        .promo-modal-close {{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2001;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            line-height: 1;
+        }}
+        
+        .promo-modal-close:hover {{
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }}
+        
+        .promo-modal-close:active {{
+            transform: scale(0.95);
+        }}
+        
+        .promo-modal-image {{
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 90vh;
+            object-fit: contain;
+        }}
+        
+        @media (max-width: 768px) {{
+            .promo-modal-content {{
+                max-width: 95%;
+                max-height: 95vh;
+            }}
+            
+            .promo-modal-close {{
+                width: 36px;
+                height: 36px;
+                font-size: 20px;
+                top: 8px;
+                right: 8px;
+            }}
+        }}
+        
+        @media (max-width: 480px) {{
+            .promo-modal-content {{
+                max-width: 98%;
+                border-radius: 8px;
+            }}
+            
+            .promo-modal-close {{
+                width: 32px;
+                height: 32px;
+                font-size: 18px;
+                top: 6px;
+                right: 6px;
+            }}
+        }}
     </style>
 </head>
 <body>
@@ -907,6 +1016,13 @@ def generate_menu_page(sheet_name, page_info):
             <li class="side-nav-item"><a href="aritaaku.html"{' class="active"' if page_info['url'] == 'aritaaku.html' else ''} data-i18n="nav.aritaaku">Aritaaku</a></li>
         </ul>
     </nav>
+    
+    <div class="promo-modal-overlay" id="promoModal">
+        <div class="promo-modal-content">
+            <button class="promo-modal-close" id="promoModalClose" aria-label="Close">×</button>
+            <img src="new-year-combo.jpg" alt="New Year Special COMBOS" class="promo-modal-image" id="promoModalImage">
+        </div>
+    </div>
     
     <div class="container">
         <h1 data-i18n="page.title.{page_info['url'].replace('.html', '').replace('-', '_')}">{page_info['title']}</h1>
@@ -1055,6 +1171,64 @@ def generate_menu_page(sheet_name, page_info):
         
         // Initialize on page load
         initLanguage();
+        
+        // Promo modal functionality
+        const promoModal = document.getElementById('promoModal');
+        const promoModalClose = document.getElementById('promoModalClose');
+        const promoModalImage = document.getElementById('promoModalImage');
+        
+        // Check if modal was already closed in this session
+        const modalClosed = sessionStorage.getItem('promoModalClosed');
+        
+        // Show modal on page load if not closed
+        function showPromoModal() {{
+            if (!modalClosed) {{
+                promoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }}
+        }}
+        
+        // Close modal function
+        function closePromoModal() {{
+            promoModal.classList.remove('active');
+            document.body.style.overflow = '';
+            sessionStorage.setItem('promoModalClosed', 'true');
+        }}
+        
+        // Close button click
+        if (promoModalClose) {{
+            promoModalClose.addEventListener('click', closePromoModal);
+        }}
+        
+        // Close on overlay click (outside image)
+        if (promoModal) {{
+            promoModal.addEventListener('click', function(e) {{
+                if (e.target === promoModal) {{
+                    closePromoModal();
+                }}
+            }});
+        }}
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {{
+            if (e.key === 'Escape' && promoModal.classList.contains('active')) {{
+                closePromoModal();
+            }}
+        }});
+        
+        // Handle image load error (if image doesn't exist, don't show modal)
+        if (promoModalImage) {{
+            promoModalImage.addEventListener('error', function() {{
+                closePromoModal();
+            }});
+            
+            // Show modal after image loads successfully
+            promoModalImage.addEventListener('load', function() {{
+                if (!modalClosed) {{
+                    setTimeout(showPromoModal, 300);
+                }}
+            }});
+        }}
         
         // Side navigation toggle
         const menuToggle = document.getElementById('menuToggle');
@@ -1501,9 +1675,125 @@ def generate_index_page():
                 height: 30px;
             }
         }
+        
+        .promo-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .promo-modal-overlay.active {
+            display: flex;
+        }
+        
+        .promo-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .promo-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2001;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .promo-modal-close:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .promo-modal-close:active {
+            transform: scale(0.95);
+        }
+        
+        .promo-modal-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        
+        @media (max-width: 768px) {
+            .promo-modal-content {
+                max-width: 95%;
+                max-height: 95vh;
+            }
+            
+            .promo-modal-close {
+                width: 36px;
+                height: 36px;
+                font-size: 20px;
+                top: 8px;
+                right: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .promo-modal-content {
+                max-width: 98%;
+                border-radius: 8px;
+            }
+            
+            .promo-modal-close {
+                width: 32px;
+                height: 32px;
+                font-size: 18px;
+                top: 6px;
+                right: 6px;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="promo-modal-overlay" id="promoModal">
+        <div class="promo-modal-content">
+            <button class="promo-modal-close" id="promoModalClose" aria-label="Close">×</button>
+            <img src="new-year-combo.jpg" alt="New Year Special COMBOS" class="promo-modal-image" id="promoModalImage">
+        </div>
+    </div>
+    
     <div class="lang-switcher" style="display: none;">
         <button class="lang-btn" id="langBtnEn" data-lang="en" onclick="switchLanguage('en')" style="display: none;">EN</button>
         <button class="lang-btn" id="langBtnTe" data-lang="te" onclick="switchLanguage('te')" style="display: none;">తెలుగు</button>
@@ -1646,6 +1936,64 @@ def generate_index_page():
         
         // Initialize on page load
         initLanguage();
+        
+        // Promo modal functionality
+        const promoModal = document.getElementById('promoModal');
+        const promoModalClose = document.getElementById('promoModalClose');
+        const promoModalImage = document.getElementById('promoModalImage');
+        
+        // Check if modal was already closed in this session
+        const modalClosed = sessionStorage.getItem('promoModalClosed');
+        
+        // Show modal on page load if not closed
+        function showPromoModal() {
+            if (!modalClosed) {
+                promoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Close modal function
+        function closePromoModal() {
+            promoModal.classList.remove('active');
+            document.body.style.overflow = '';
+            sessionStorage.setItem('promoModalClosed', 'true');
+        }
+        
+        // Close button click
+        if (promoModalClose) {
+            promoModalClose.addEventListener('click', closePromoModal);
+        }
+        
+        // Close on overlay click (outside image)
+        if (promoModal) {
+            promoModal.addEventListener('click', function(e) {
+                if (e.target === promoModal) {
+                    closePromoModal();
+                }
+            });
+        }
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && promoModal.classList.contains('active')) {
+                closePromoModal();
+            }
+        });
+        
+        // Handle image load error (if image doesn't exist, don't show modal)
+        if (promoModalImage) {
+            promoModalImage.addEventListener('error', function() {
+                closePromoModal();
+            });
+            
+            // Show modal after image loads successfully
+            promoModalImage.addEventListener('load', function() {
+                if (!modalClosed) {
+                    setTimeout(showPromoModal, 300);
+                }
+            });
+        }
     </script>
 </body>
 </html>
